@@ -10,9 +10,9 @@ var carats = [];
 var cuts = [];
 var colors = [];
 var clarities = [];
-// var lengths = [];
-// var depths = [];
-// var widths = [];
+var lengths = [];
+var depths = [];
+var widths = [];
 var volumes = [];
 var y = [];
 var x = [];
@@ -65,22 +65,16 @@ fs.createReadStream("diamonds.csv")
         cuts.push(row.cut);
         colors.push(row.color);
         clarities.push(row.clarity);
-        // lengths.push(Number(row.x));
-        // depths.push(Number(row.y));
-        // widths.push(Number(row.z));
+        lengths.push(Number(row.x));
+        depths.push(Number(row.y));
+        widths.push(Number(row.z));
         volumes.push(Number(row.x) * Number(row.y) * Number(row.z));
         y.push([Number(row.price)]);
     }).on("end", () => {
         console.log("CSV Processed");
-        // console.log(carats);
-        // console.log(cuts);
-        // console.log(colors);
-        // console.log(clarities);
-        // console.log(lengths);
-        // console.log(widths);
-        // console.log(depths);
         createRegressionModel();
         calculateRSquared();
+        // debug();
     });
 
 function createRegressionModel() {
@@ -144,7 +138,23 @@ function calculateRSquared() {
     }
 
     // get R Squared
-    let rSquared = predictedSquared / actualSquared;
-
+    let rSquared = 1 - (predictedSquared / actualSquared);
+    console.log("Predicted Variance: ", predictedSquared);
+    console.log("Total Variance: ", actualSquared);
     console.log("R-Squared: ", rSquared, "(", (rSquared * 100).toFixed(2), "%)");
+}
+
+function debug()
+{
+    console.log(carats);
+    console.log(cuts);
+    console.log(colors);
+    console.log(clarities);
+    console.log(lengths);
+    console.log(widths);
+    console.log(depths);
+    console.log(volumes);
+    console.log(y);
+    console.log(x);
+    console.log(b);
 }
